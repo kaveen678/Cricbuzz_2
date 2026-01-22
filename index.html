@@ -23,7 +23,7 @@
         #player { 
             display: none; 
             width: 100%; 
-            height: 100%; /* සම්පූර්ණ උස ලබා ගැනීමට */
+            height: 100%; 
             background: #000; 
         }
         #player iframe {
@@ -52,6 +52,28 @@
             font-size: 14px;
             color: #ccc;
         }
+        /* Footer Style */
+        .footer {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            font-size: 14px;
+            color: #ffffff;
+            opacity: 0.8;
+        }
+        .powered-by {
+            font-weight: bold;
+            color: #00ffcc; /* කැපී පෙනෙන වර්ණයක් */
+            margin-top: 5px;
+            display: block;
+        }
+        /* Timer Style */
+        #timer-screen {
+            display: none;
+            font-size: 50px;
+            font-weight: bold;
+            color: #ff0000;
+        }
     </style>
 </head>
 <body>
@@ -61,6 +83,11 @@
     <div id="server-cost-msg">These ads are to cover our server costs</div>
 </div>
 
+<div id="timer-screen">
+    <div id="countdown-number">3</div>
+    <p style="font-size: 18px; color: #fff;">Loading Player...</p>
+</div>
+
 <div id="player"></div>
 
 <div id="ad-message">
@@ -68,11 +95,15 @@
     <p>Please disable your Ad Blocker for this website and refresh the page to continue.</p>
 </div>
 
+<div class="footer" id="main-footer">
+    ©2025 - 2026 All Right Received
+    <span class="powered-by">Powered By Kaveen Chamodya</span>
+</div>
+
 <script>
     let adBlockEnabled = false;
     const googleAdUrl = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
     
-    // ඇඩ් බ්ලොකර් පරීක්ෂා කිරීම
     fetch(googleAdUrl, { method: 'HEAD', mode: 'no-cors' })
     .then(() => {
         adBlockEnabled = false;
@@ -81,26 +112,44 @@
         adBlockEnabled = true;
         document.getElementById('ads-screen').style.display = 'none';
         document.getElementById('ad-message').style.display = 'block';
+        document.getElementById('main-footer').style.display = 'none';
     });
 
     function startApp() {
         if (adBlockEnabled) return;
 
-        // ඇඩ්ස් සහිත තිරය ඉවත් කර ප්ලේයර් එක පෙන්වීම
-        document.getElementById('ads-screen').style.display = 'none';
-        document.getElementById('player').style.display = 'block';
-
-        // Ads නව ටැබ් වල විවෘත කිරීම
+        // මුලින්ම ඇඩ්ස් ඕපන් කිරීම
         window.open("https://www.effectivegatecpm.com/gzdt4huw9e?key=dfc124f9ac3df1aacb231383657ec1cc", "_blank");
         window.open("https://www.effectivegatecpm.com/kwnknce31a?key=844578f420f4d61ec5111c64452c833f", "_blank");
         window.open("https://www.effectivegatecpm.com/dg3qvhzd?key=fff4b6a1bac1515ce8745b83683308fd", "_blank");
         window.open("https://www.effectivegatecpm.com/catp6hxc?key=cdc419bda1c1eb2b33e06fc7cd1ffd74", "_blank");
 
-        // ඔබේ අලුත් PHP Link එක මෙතැනට එක් කර ඇත
+        // ඇඩ් ස්ක්‍රීන් එක සහ ෆුටර් එක ඉවත් කර ටයිමර් එක පෙන්වීම
+        document.getElementById('ads-screen').style.display = 'none';
+        document.getElementById('main-footer').style.display = 'none';
+        document.getElementById('timer-screen').style.display = 'block';
+
+        let timeLeft = 3;
+        let timerElement = document.getElementById('countdown-number');
+
+        let countdown = setInterval(function() {
+            timeLeft--;
+            if(timeLeft <= 0) {
+                clearInterval(countdown);
+                loadPlayer();
+            } else {
+                timerElement.innerText = timeLeft;
+            }
+        }, 1000);
+    }
+
+    function loadPlayer() {
+        document.getElementById('timer-screen').style.display = 'none';
+        document.getElementById('player').style.display = 'block';
+
         const playerDiv = document.getElementById('player');
         const phpUrl = "https://s1.v5on.site/LIVE/SA.php"; 
         
-        // Iframe එක මගින් වීඩියෝව ප්ලේ කිරීම
         playerDiv.innerHTML = `<iframe src="${phpUrl}" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>`;
     }
 </script>
